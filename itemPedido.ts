@@ -8,7 +8,7 @@ export class ItemPedido {
     constructor(produto: Produto, quantidade: number) {
         this.produto = produto;
         this.quantidade = quantidade;
-        this.subtotal = this.calcularSubTotal();
+        this.subtotal = produto.getPreco() * quantidade; 
     }
 
     // Getter e Setter para o produto
@@ -28,7 +28,7 @@ export class ItemPedido {
     public setQuantidade(quantidade: number): void {
         if (quantidade >= 0) {
             this.quantidade = quantidade;
-            this.subtotal = this.calcularSubTotal();
+            this.setSubtotal();
         } else {
             console.log("Quantidade não pode ser negativa.");
         }
@@ -39,7 +39,7 @@ export class ItemPedido {
         return this.subtotal;
     }
 
-    private calcularSubTotal(): number {
-        return  this.subtotal = this.produto.getPreco() * this.quantidade;
+    private setSubtotal(){
+        this.subtotal = this.produto.getPreco() * this.quantidade;
     }
 }

@@ -53,4 +53,8 @@ class Cliente {
     public fazerPedido(pedido: Pedido): void {
         this.pedidos.push(pedido);
     }
+
+    public exibirPedios(): void {
+
+    }
 }

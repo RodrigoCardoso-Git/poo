@@ -39,12 +39,30 @@ export class Pedido {
             itemExistente.setQuantidade(itemExistente.getQuantidade() + quantidade);
         } else {
             // Se o produto não estiver no pedido, cria um novo ItemPedido
-            let subtotal = produto.getPreco() * quantidade;
             let novoItem = new ItemPedido(produto, quantidade);
-            this.itens.push(novoItem);
+            let novaLista: ItemPedido[] = this.getItens();
+            novaLista.push(novoItem);
+            this.setItens(novaLista);
         }
     
-        this.calcularValorTotal();
+        this.setValorTotal();
+    }
+
+    public removerProduto(produto: Produto): void {
+
+        let itemExistente = null;
+        let novaLista: ItemPedido[] = this.getItens();
+    
+        // percorre a lista de itens
+        for (let i = 0; i < this.itens.length; i++) {
+            // Verifica se é o mesmo produto pelo nome
+            if (this.itens[i].getProduto().getNome() === produto.getNome()) {
+                novaLista.splice(i, 1);
+                this.setItens(novaLista);
+                break;  // Sai do loop assim que encontrar o item
+            }
+        }
+        this.setValorTotal();
     }
     
 
@@ -77,25 +95,25 @@ export class Pedido {
         return this.valorTotal;
     }
 
-    public adicionarItem(item: ItemPedido): void {
-        this.itens.push(item);
-        this.valorTotal = this.calcularValorTotal();
-    }
-
-    public getItens(): ItemPedido[] {
-        return this.itens;
-    }
-
-    public calcularValorTotal(){
+    public setValorTotal(){
         let total = 0;
     
         // Itera sobre os itens e soma os subtotais
         for (let i = 0; i < this.itens.length; i++) {
             total += this.itens[i].getSubtotal(); 
         }
-     
         // Atribui o total calculado à variável valorTotal
-        return total;
+        this.valorTotal = total;
     }
+
+    public setItens(item: ItemPedido[]): void {
+        this.itens = item;
+        this.setValorTotal();
+    }
+
+    public getItens(): ItemPedido[] {
+        return this.itens;
+    }
+
 }
 
